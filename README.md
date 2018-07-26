@@ -7,7 +7,7 @@ Using this library, both senior programmers and novice programmers will be easie
 
 Example
 
-``
+```
 Demonstration of conversion of ISO 8583 - JSON - XML
 Config : 
 [{"field":"2","format":"%-6s","variable":"pan","options":"","field_length":"6","type":"LLVAR"},{"field":"3","format":"%06d","variable":"processing_code","options":"","field_length":"6","type":"NUMERIC"},{"field":"4","format":"%012d","variable":"amount","options":"","field_length":"12","type":"NUMERIC"},{"field":"7","format":"%-10s","variable":"transmission_date_time","options":"","field_length":"10","type":"STRING"},{"field":"11","format":"%06d","variable":"stan","options":"","field_length":"6","type":"NUMERIC"},{"field":"12","format":"%-6s","variable":"local_time","options":"","field_length":"6","type":"STRING"},{"field":"13","format":"%-4s","variable":"local_date","options":"","field_length":"4","type":"STRING"},{"field":"15","format":"%-4s","variable":"settlement_date","options":"","field_length":"4","type":"STRING"},{"field":"18","format":"%04d","variable":"merchant_type","options":"","field_length":"4","type":"NUMERIC"},{"field":"32","format":"%-3s","variable":"acq_institution_code","options":"","field_length":"3","type":"LLVAR"},{"field":"37","format":"%012d","variable":"reference_number","options":"","field_length":"12","type":"NUMERIC"},{"field":"41","format":"%-8s","variable":"card_acceptor_terminal","options":"","field_length":"8","type":"STRING"},{"field":"42","format":"%15s","variable":"acceptor_identification_code","options":"","field_length":"15","type":"STRING"},{"field":"48","format":"%-7s%011d%012d%01d%-32s%-32s%-25s%4s%-9s","variable":"switcher_id, meter_id, customer_id, id_selector, pln_reference_number, ba_reference_number, customer_name, tariff, ceiling","options":"","field_length":"133","type":"LLLVAR"},{"field":"49","format":"%03d","variable":"transaction_currency_code","options":"","field_length":"3","type":"NUMERIC"}]
@@ -50,4 +50,4 @@ XML :
 	<merchant_type>6789</merchant_type>
 </data>
 =============================================================
-``
+```
