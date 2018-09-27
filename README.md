@@ -5,6 +5,8 @@ Beginner programmers often experience difficulties when parsing and building dat
 
 Using this library, both senior programmers and novice programmers will be easier to build applications that use the ISO 8583 message format.
 
+You can save the configuration on file or database as string.
+
 ### Example
 
 Script
