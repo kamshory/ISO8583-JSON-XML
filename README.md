@@ -117,3 +117,45 @@ XML :
 </data>
 =============================================================
 ```
+
+You can also use JSONObject as config type.
+
+```java
+String configStr = "{\"f41\":{\"format\":\"%-8s\", \"variable\":\"terminal_id\", \"options\":\"\",\n" + 
+	"\"field_length\":\"8\", \"type\":\"STRING\"},\"f63\":{\"format\":\"%-32s%-30s%-50s%-\n" + 
+	"18s\", \"variable\":\"locket_code, locket_name, locket_address, locket_phone\",\n" +
+	"\"options\":\"\", \"field_length\":\"130\", \"type\":\"LLLVAR\"},\"f32\":{\"format\":\"%-\n" + 
+	"11s\", \"variable\":\"acq_institution_code\", \"options\":\"\", \"field_length\":\"11\",\n" + 
+	"\"type\":\"LLVAR\"},\"f121\":{\"format\":\"%-32s\", \"variable\":\"payment_reference\",\n" + 
+	"\"options\":\"\", \"field_length\":\"32\", \"type\":\"LLLVAR\"},\"f12\":{\"format\":\"%-6s\",\n" + 
+	"\"variable\":\"local_time\", \"options\":\"\", \"field_length\":\"6\",\n" + 
+	"\"type\":\"STRING\"},\"f120\":{\"format\":\"%-20s\", \"variable\":\"product_code\",\n" + 
+	"\"options\":\"\", \"field_length\":\"20\", \"type\":\"LLLVAR\"},\"f11\":{\"format\":\"%-6s\",\n" + 
+	"\"variable\":\"stan\", \"options\":\"\", \"field_length\":\"6\",\n" + 
+	"\"type\":\"STRING\"},\"f33\":{\"format\":\"%-11s\",\n" + 
+	"\"variable\":\"fwd_institution_code\", \"options\":\"\", \"field_length\":\"11\",\n" + 
+	"\"type\":\"LLVAR\"},\"f13\":{\"format\":\"%-4s\", \"variable\":\"local_date\",\n" + 
+	"\"options\":\"\", \"field_length\":\"4\", \"type\":\"STRING\"},\"f49\":{\"format\":\"%03d\",\n" + 
+	"\"variable\":\"transaction_currency_code\", \"options\":\"\", \"field_length\":\"3\",\n" + 
+	"\"type\":\"NUMERIC\"},\"f15\":{\"format\":\"%-4s\", \"variable\":\"settlement_date\",\n" + 
+	"\"options\":\"\", \"field_length\":\"4\", \"type\":\"STRING\"},\"f37\":{\"format\":\"%-12s\",\n" + 
+	"\"variable\":\"reference_number\", \"options\":\"\", \"field_length\":\"12\",\n" + 
+	"\"type\":\"STRING\"},\"f48\":{\"format\":\"%-13s\", \"variable\":\"registration_number\",\n" + 
+	"\"options\":\"\", \"field_length\":\"13\", \"type\":\"LLLVAR\"},\"f2\":{\"format\":\"%-19s\",\n" + 
+	"\"variable\":\"pan\", \"options\":\"\", \"field_length\":\"19\",\n" + 
+	"\"type\":\"LLVAR\"},\"f18\":{\"format\":\"%04d\", \"variable\":\"merchant_type\",\n" + 
+	"\"options\":\"\", \"field_length\":\"4\", \"type\":\"NUMERIC\"},\"f3\":{\"format\":\"%06d\",\n" + 
+	"\"variable\":\"processing_code\", \"options\":\"\", \"field_length\":\"6\",\n" + 
+	"\"type\":\"NUMERIC\"},\"f7\":{\"format\":\"%-10s\",\n" + 
+	"\"variable\":\"transmission_date_time\", \"options\":\"\", \"field_length\":\"10\",\n" + 
+	"\"type\":\"STRING\"},\"f127\":{\"format\":\"%-20s%-32s\", \"variable\":\"username,\n" + 
+	"password\", \"options\":\"\", \"field_length\":\"52\", \"type\":\"LLLVAR\"}}";
+JSONObject config = new JSONObject();
+try 
+{
+	config = new JSONObject(configStr);
+}
+catch (JSONException e) 
+{
+	e.printStackTrace();
+}
