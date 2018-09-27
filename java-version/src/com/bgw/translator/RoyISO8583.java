@@ -383,7 +383,7 @@ public class RoyISO8583
 		if(dataLength == 0)
 		{
 			String f = String.format("f", field);
-			j = (JSONObject) this.config.get(f);
+			j = this.config.optJSONObject(f);
 			if(j != null)
 			{
 				int c_field_length = Integer.parseInt(j.get("field_length").toString());
@@ -682,7 +682,7 @@ public class RoyISO8583
 		{
 			field = Integer.parseInt(this.fields[iter]);
 			// get config
-			jo = (JSONObject) this.config.get("f"+field);
+			jo = this.config.optJSONObject("f"+field);
 			if(jo == null)
 			{
 				
@@ -708,7 +708,7 @@ public class RoyISO8583
 				for(iter = 0; iter<this.fields.length; iter++)
 				{	
 					field = Integer.parseInt(this.fields[iter]);
-					jo = (JSONObject) this.config.get("f"+field);
+					jo = this.config.optJSONObject("f"+field);
 					if(jo == null)
 					{
 						if(RoyISO8583.generalConfig != null)
