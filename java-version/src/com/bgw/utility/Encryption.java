@@ -1,15 +1,14 @@
 package com.bgw.utility;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.binary.Base64;
 /**
  * CryptoTool is class to encrypt and decrypt data.
  * @author Kamshory, MT
@@ -118,7 +117,7 @@ public class Encryption
             // Encrypt
             byte[] enc = ecipher.doFinal(utf8);  
             // Encode bytes to base64 to get a string
-            return new String(Base64.encodeBase64(enc));            
+            return new String(this.base64Encode(enc));            
         } 
         catch (Exception e) 
         {
@@ -136,7 +135,7 @@ public class Encryption
         try 
         {
             // Decode base64 to get bytes
-            byte[] dec = Base64.decodeBase64(input.getBytes()); 
+            byte[] dec = this.base64Decode(input); 
             // Decrypt
             byte[] utf8 = dcipher.doFinal(dec);
             // Decode using utf-8
@@ -161,12 +160,11 @@ public class Encryption
      * @param input String to be encoded
      * @return Encoded string
      */
-    public String base64Encode(String input) 
+    public String base64Encode(byte[] input) 
     {
     	try
     	{
-    		byte[] encodedBytes = Base64.encodeBase64(input.getBytes());
-        	return new String(encodedBytes, Charset.forName("UTF-8"));
+	        return Base64.getEncoder().encodeToString(input);
     	}
     	catch(NullPointerException e)
     	{
@@ -178,17 +176,16 @@ public class Encryption
      * @param input String to be decoded
      * @return Decoded string
      */
-    public String base64Decode(String input) 
+    public byte[] base64Decode(String input) 
     {
     	try
     	{
-	        byte[] decodedBytes = Base64.decodeBase64(input.getBytes());
-	        return new String(decodedBytes, Charset.forName("UTF-8"));
+	        return Base64.getDecoder().decode(input);
     	}
     	catch(NullPointerException e)
     	{
     		e.printStackTrace();
-    		return "";
+    		return null;
     	}
     }
 }

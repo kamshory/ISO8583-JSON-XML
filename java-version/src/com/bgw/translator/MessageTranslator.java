@@ -5,10 +5,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.bgw.utility.Utility;
 
@@ -38,7 +37,6 @@ public class MessageTranslator extends Translator{
 	 * @param formatMap Object containing format and variable
 	 * @return Return JSON Object containing common specs that exists on the message
 	 */
-	@SuppressWarnings("unchecked")
 	public JSONObject parseISO8583(String message, JSONObject formatMap)
 	{
 		JSONObject json = new JSONObject();
@@ -55,7 +53,7 @@ public class MessageTranslator extends Translator{
 				{
 					try
 					{
-						JSONParser parser = new JSONParser();				
+										
 						String[] fieldFromTemplate = this.listStringToArrayString(this.listFormatMapKey(formatMap));			
 						int idx = 2;
 						String subfield = "";
@@ -79,7 +77,7 @@ public class MessageTranslator extends Translator{
 									String jostr = formatMap.get(fieldName).toString();								
 									try 
 									{
-										fieldFormat = (JSONObject) parser.parse(jostr);
+										fieldFormat = new JSONObject(jostr);
 										format = fieldFormat.get("format").toString();
 										variable = fieldFormat.get("variable").toString();
 										variable = variable.replaceAll(" ", "");
@@ -160,7 +158,7 @@ public class MessageTranslator extends Translator{
 											json.put(key, value);										
 										}							
 									} 
-									catch (ParseException e) 
+									catch (JSONException e) 
 									{
 										e.printStackTrace();
 									}							
@@ -209,7 +207,6 @@ public class MessageTranslator extends Translator{
 	 * @param formatMap Object containing format and variable
 	 * @return Return JSON Object containing common specs that exists on the message
 	 */
-	@SuppressWarnings("unchecked")
 	public JSONObject parseISO8583(RoyISO8583 royISO8583, JSONObject formatMap)
 	{
 		JSONObject json = new JSONObject();
@@ -220,7 +217,7 @@ public class MessageTranslator extends Translator{
 			{
 				try
 				{
-					JSONParser parser = new JSONParser();				
+									
 					String[] fieldFromTemplate = this.listStringToArrayString(this.listFormatMapKey(formatMap));			
 					int idx = 2;
 					String subfield = "";
@@ -244,7 +241,7 @@ public class MessageTranslator extends Translator{
 								String jostr = formatMap.get(fieldName).toString();								
 								try 
 								{
-									fieldFormat = (JSONObject) parser.parse(jostr);
+									fieldFormat = new JSONObject(jostr);
 									
 									format = fieldFormat.get("format").toString();
 									variable = fieldFormat.get("variable").toString();
@@ -326,7 +323,7 @@ public class MessageTranslator extends Translator{
 										json.put(key, value);										
 									}							
 								} 
-								catch (ParseException e) 
+								catch (JSONException e) 
 								{
 									e.printStackTrace();
 								}							
@@ -376,7 +373,7 @@ public class MessageTranslator extends Translator{
 	public byte[] buildISO8583(JSONObject json, JSONObject formatMap, String mti_id)
 	{
 		this.royISO8583 = new RoyISO8583(mti_id, formatMap);
-		JSONParser parser = new JSONParser();
+		
 		byte[] message = null;
 		JSONObject row = new JSONObject();
 		String format = "";
@@ -409,7 +406,7 @@ public class MessageTranslator extends Translator{
 			        if(formatMap.get(key) != null)
 			        {			        	
 				        String keySpecs = formatMap.get(key).toString();
-				        row = (JSONObject) parser.parse(keySpecs);			        
+				        row = new JSONObject(keySpecs);			        
 				        format = row.get("format").toString();
 				        variable = row.get("variable").toString();
 				        variable = variable.trim();
@@ -645,7 +642,7 @@ public class MessageTranslator extends Translator{
 		if(!formatMap.equals(new JSONObject()))
 		{
 			RoyISO8583 royIso = new RoyISO8583(mti_id, formatMap);
-			JSONParser parser = new JSONParser();
+			
 			JSONObject row = new JSONObject();
 			String format = "";
 			String variable = "";
@@ -689,7 +686,7 @@ public class MessageTranslator extends Translator{
 				        if(formatMap.get(key) != null)
 				        {			        	
 					        keySpecs = formatMap.get(key).toString();
-					        row = (JSONObject) parser.parse(keySpecs);			        
+					        row = new JSONObject(keySpecs);			        
 					        format = row.get("format").toString();
 					        variable = row.get("variable").toString();
 					        field_length = Integer.parseInt(row.get("field_length").toString());
@@ -1035,7 +1032,6 @@ public class MessageTranslator extends Translator{
 	 * @param rootTag Root tag to wrap the XML
 	 * @return Return byte containing XML format message
 	 */
-	@SuppressWarnings("unchecked")
 	public String buildXML(JSONObject json, String rootTag)
 	{
 		String xml = "";
@@ -1046,7 +1042,7 @@ public class MessageTranslator extends Translator{
 	    do
 	    {
 	        key = keys.next().toString();
-	    	body += "\t<"+key+">"+Translator.escapeXML(json.getOrDefault(key, "").toString())+"</"+key+">\r\n";
+	    	body += "\t<"+key+">"+Translator.escapeXML(json.optString(key, "").toString())+"</"+key+">\r\n";
 	    }
 	    while(keys.hasNext());
 		xml = "<"+rootTag+">\r\n"+body+"</"+rootTag+">";

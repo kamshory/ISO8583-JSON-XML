@@ -19,13 +19,10 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
 
 import com.bgw.utility.Utility;
 
@@ -346,7 +343,7 @@ public class Translator {
 			i++;			
 		}				
 		result += substringOf(format, curstart);			
-		JSONParser parser = new JSONParser();
+		
 		JSONObject data = new JSONObject();
 		JSONObject specs = new JSONObject();
 		JSONObject json = new JSONObject();
@@ -355,8 +352,8 @@ public class Translator {
 		{
 			try 
 			{
-				data = (JSONObject) parser.parse(message);
-				specs = (JSONObject) parser.parse(result);
+				data = new JSONObject(message);
+				specs = new JSONObject(result);
 				Set<?> s =  data.keySet();
 			    Iterator<?> iter = s.iterator();
 			    do
@@ -394,10 +391,10 @@ public class Translator {
 			    {
 			    	buff = rTrim(buff, ",");
 			    	buff = "{"+buff+"}";
-			    	json = (JSONObject) parser.parse(buff);
+			    	json = new JSONObject(buff);
 			    }
 			} 
-			catch (ParseException e) 
+			catch (JSONException e) 
 			{
 				e.printStackTrace();
 			}
@@ -411,55 +408,9 @@ public class Translator {
 	 */
 	public JSONObject XMLToJSON(String message)
 	{
-		JSONParser parser = new JSONParser();
-		JSONObject json = null;
-		String buff = "";
-	    try
-	    {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		    DocumentBuilder builder = factory.newDocumentBuilder();
-		    Document document = builder.parse(new InputSource(new StringReader(message)));		    
-		    NodeList root = document.getChildNodes();
-		    String rootTag = root.item(0).getNodeName();
-		    if(rootTag != null)
-		    {
-		    	rootTag = rootTag.trim();
-		    	if(!rootTag.equals(""))
-		    	{		    
-				    NodeList flowList = document.getElementsByTagName(rootTag);				   
-				    for (int i = 0; i < flowList.getLength(); i++) 
-				    {
-				        NodeList childList = flowList.item(i).getChildNodes();
-				        for (int j = 0; j < childList.getLength(); j++) 
-				        {       	
-				        	String tag = childList.item(j).getNodeName();
-				        	
-				        	String content = childList.item(j).getTextContent().trim();
-				        	if(tag != null)
-				        	{
-				        		tag = tag.trim();
-				        		if(!tag.equals("") && !tag.contains("#text"))
-				        		{
-					        		buff += "\""+tag+"\":\""+content+"\",";
-				        		}
-				        	}			        	
-				        }
-				    }
-				    if(!buff.equals(""))
-		        	{
-		        		buff = rTrim(buff, ",");
-		        		buff = "{"+buff+"}";
-		        		json = (JSONObject) parser.parse(buff);
-		        	}
-		    	}
-		    }
-	    }
-	    catch(Exception e)
-	    {
-	    	Utility.println("Empty XML string");
-	    	e.printStackTrace();
-	    }
-	    return json;	
+		
+		JSONObject json = XML.toJSONObject(message);
+		return json;
 	}
 	/**
 	 * Parse XML message using template. All the data will be stored on variables given
@@ -529,7 +480,7 @@ public class Translator {
 			i++;			
 		}		
 		result += substringOf(format, curstart);
-		JSONParser parser = new JSONParser();
+		
 		JSONObject data = null;
 		JSONObject specs = null;
 		JSONObject json = null;
@@ -577,10 +528,10 @@ public class Translator {
 		    {
 		    	buff = rTrim(buff, ",");
 		    	buff = "{"+buff+"}";
-		    	json = (JSONObject) parser.parse(buff);
+		    	json = new JSONObject(buff);
 		    }
 		} 
-		catch (ParseException e) 
+		catch (JSONException e) 
 		{
 			e.printStackTrace();
 		}
@@ -700,7 +651,6 @@ public class Translator {
 	 * @param parameters String containing semi URL encoded
 	 * @return JSONObject parsed from parameters
 	 */
-	@SuppressWarnings("unchecked")
 	public JSONObject parseParameter(String parameters)
 	{
 		JSONObject json = new JSONObject();
@@ -1033,7 +983,6 @@ public class Translator {
 	 * @param message ISO message 
 	 * @return JSONObject contains basic information
 	 */
-	@SuppressWarnings("unchecked")
 	public JSONObject generalParseIncommingISO(String message)
     {
 		String mti_id = (message.length() > 4)?message.substring(0, 4):"0800";
@@ -1108,14 +1057,13 @@ public class Translator {
 	 * @return JSONObject contains basic information about the transaction
 	 */
 	public JSONObject generalParseIncommingJSON(String message)
-	{
-		JSONParser parser = new JSONParser();
+	{	
 		JSONObject json = new JSONObject();
 		try 
 		{
-			json = (JSONObject) parser.parse(message);
+			json = new JSONObject(message);
 		} 
-		catch (ParseException e) 
+		catch (JSONException e) 
 		{
 			e.printStackTrace();
 		}
@@ -1614,8 +1562,7 @@ public class Translator {
      * @param options String containing the function
      * @return JSONObject after the operation
      */
-    @SuppressWarnings("unchecked")
-	public JSONObject applyOption(JSONObject json, String options)
+ 	public JSONObject applyOption(JSONObject json, String options)
     {
     	if(options.length() > 0)
     	{
@@ -1697,9 +1644,9 @@ public class Translator {
 	    				option = args[1];
 	    				try
 	    				{
-	    					if(json.containsKey(key))
+	    					if(json.has(key))
 	    					{
-	    						value = json.getOrDefault(key, "").toString();
+	    						value = json.optString(key, "").toString();
 	    						if(options.length() > 0)
 	    						{
 	    							value = this.applyFunction(value, option);
@@ -1819,12 +1766,11 @@ public class Translator {
 		}
 		return ret;
 	}
-	@SuppressWarnings("unchecked")
 	public JSONObject arrayToObject(JSONArray config)
 	{
 		JSONObject jo = new JSONObject();
 		JSONObject output = new JSONObject();
-		int length = config.size();
+		int length = config.length();
 		int i, j;
 		String field = "";
 		for(i = 0; i<length; i++)

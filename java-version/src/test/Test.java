@@ -2,10 +2,9 @@ package test;
 
 import java.io.IOException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.bgw.translator.MessageTranslator;
 
@@ -21,25 +20,24 @@ public class Test {
 		JSONArray config = new JSONArray();
 		JSONObject json = new JSONObject();
 	
-		JSONParser parser = new JSONParser();
 		
 		try 
 		{
-			config = (JSONArray) parser.parse(configStr);
+			config = new JSONArray(configStr);
 			json = mt.parseISO8583(iso, config);
 			iso_new = new String(mt.buildISO8583(json, config, mti_id));
 			xml = mt.buildXML(json, "data");
 			
 			System.out.println("Demonstration of conversion of ISO 8583 - JSON - XML");
 			System.out.println("Config : ");
-			System.out.println(config.toJSONString());
+			System.out.println(config.toString());
 			System.out.println("=============================================================");
 			
 			System.out.println("Original ISO 8583 : ");
 			System.out.println("'"+iso+"'");
 			System.out.println("Convert ISO to JSON");
 			System.out.println("JSON : ");
-			System.out.println(json.toJSONString());
+			System.out.println(json.toString());
 			System.out.println("=============================================================");
 			
 			System.out.println("Now, convert JSON to new ISO");
@@ -53,7 +51,7 @@ public class Test {
 			System.out.println("=============================================================");
 			
 		} 
-		catch (ParseException e) 
+		catch (JSONException e) 
 		{
 			e.printStackTrace();
 		}
