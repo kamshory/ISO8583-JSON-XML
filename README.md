@@ -9,10 +9,10 @@ You can save the configuration on file or database as string.
 
 ### Capability
 
-1. Convert JSON to ISO Message 8583
-2. Convert XML to ISO Message 8583
-3. Convert ISO Message 8583 to JSON
-4. Convert ISO Message 8583 to XML
+1. Convert JSON to ISO 8583
+2. Convert XML to ISO 8583
+3. Convert ISO 8583 to JSON
+4. Convert ISO 8583 to XML
 5. Convert JSON to XML
 6. Convert XML to JSON
 
